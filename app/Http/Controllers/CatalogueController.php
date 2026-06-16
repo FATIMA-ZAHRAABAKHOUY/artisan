@@ -15,9 +15,13 @@ class CatalogueController extends Controller
             ->with(['artisan.user', 'category']);
 
         if ($request->filled('category')) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->input('category'))
-                    ->orWhere('id', $request->input('category'));
+            $category = $request->input('category');
+            $query->whereHas('category', function ($q) use ($category) {
+                if (is_numeric($category)) {
+                    $q->where('id', (int) $category);
+                } else {
+                    $q->where('slug', $category);
+                }
             });
         }
 
