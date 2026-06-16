@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Artisan;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class ArtisanSeeder extends Seeder
 {
@@ -54,7 +53,7 @@ class ArtisanSeeder extends Seeder
                 ['email' => $data['email']],
                 [
                     'name' => $data['name'],
-                    'password' => Hash::make('password'),
+                    'password' => 'password',
                     'role' => 'artisan',
                     'phone' => null,
                     'is_active' => true,

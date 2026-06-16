@@ -7,6 +7,7 @@ use App\Models\Commande;
 use App\Models\CommandeItem;
 use App\Models\Livraison;
 use App\Models\Product;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -67,10 +68,19 @@ class CommandeController extends Controller
                 ]);
 
                 foreach ($items as $item) {
-                    $product = Product::query()->lockForUpdate()->find($item['product']->id);
+                    $product = Product::query()->find($item['product']->id);
 
-                    if (! $product || $product->stock < $item['quantity']) {
-                        throw new \RuntimeException('Stock insuffisant pour '.$item['product']->name);
+                    if (! $product) {
+                        throw new \RuntimeException('Produit indisponible : '.$item['product']->name);
+                    }
+
+                    $affected = Product::query()
+                        ->where('id', $product->id)
+                        ->where('stock', '>=', $item['quantity'])
+                        ->decrement('stock', $item['quantity']);
+
+                    if ($affected === 0) {
+                        throw new \RuntimeException('Stock insuffisant pour '.$product->name);
                     }
 
                     CommandeItem::create([
@@ -81,8 +91,6 @@ class CommandeController extends Controller
                         'unit_price' => $item['unit_price'],
                         'subtotal' => $item['subtotal'],
                     ]);
-
-                    $product->decrement('stock', $item['quantity']);
                 }
 
                 Livraison::create([
@@ -94,6 +102,10 @@ class CommandeController extends Controller
             });
         } catch (\RuntimeException $e) {
             return back()->withInput()->withErrors(['cart' => $e->getMessage()]);
+        } catch (QueryException $e) {
+            report($e);
+
+            return back()->withInput()->withErrors(['cart' => 'Une erreur est survenue lors de la commande. Veuillez réessayer.']);
         }
 
         session()->forget('cart');

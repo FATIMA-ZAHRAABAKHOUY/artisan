@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CommandeResource\Pages;
 use App\Models\Commande;
+use App\Models\CommandeItem;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -111,14 +112,14 @@ class CommandeResource extends Resource
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->disabled(fn (?Commande $record): bool => $record !== null)
+                                    ->disabled(fn (?CommandeItem $record): bool => $record !== null)
                                     ->dehydrated(),
 
                                 Forms\Components\TextInput::make('quantity')
                                     ->label('Quantité')
                                     ->numeric()
                                     ->required()
-                                    ->disabled(fn (?Commande $record): bool => $record !== null)
+                                    ->disabled(fn (?CommandeItem $record): bool => $record !== null)
                                     ->dehydrated(),
 
                                 Forms\Components\TextInput::make('unit_price')
@@ -126,7 +127,7 @@ class CommandeResource extends Resource
                                     ->numeric()
                                     ->prefix('MAD')
                                     ->required()
-                                    ->disabled(fn (?Commande $record): bool => $record !== null)
+                                    ->disabled(fn (?CommandeItem $record): bool => $record !== null)
                                     ->dehydrated(),
 
                                 Forms\Components\TextInput::make('subtotal')
@@ -134,7 +135,7 @@ class CommandeResource extends Resource
                                     ->numeric()
                                     ->prefix('MAD')
                                     ->required()
-                                    ->disabled(fn (?Commande $record): bool => $record !== null)
+                                    ->disabled(fn (?CommandeItem $record): bool => $record !== null)
                                     ->dehydrated(),
                             ])
                             ->columns(4)

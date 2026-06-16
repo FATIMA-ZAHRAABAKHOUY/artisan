@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class ClientSeeder extends Seeder
 {
@@ -33,7 +32,7 @@ class ClientSeeder extends Seeder
                 ['email' => $client['email']],
                 [
                     'name' => $client['name'],
-                    'password' => Hash::make('password'),
+                    'password' => 'password',
                     'role' => 'client',
                     'phone' => $client['phone'],
                     'is_active' => true,
