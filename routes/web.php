@@ -53,4 +53,5 @@ Route::middleware(['auth', 'artisan'])->prefix('artisan')->name('artisan.')->gro
     Route::get('/dashboard', [ArtisanDashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', ArtisanProductController::class);
     Route::get('/formations', [ArtisanFormationController::class, 'index'])->name('formations.index');
+    Route::get('/formations/{formation}/inscriptions', [ArtisanFormationController::class, 'enrollments'])->name('formations.enrollments');
 });

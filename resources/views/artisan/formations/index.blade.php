@@ -20,6 +20,7 @@
                                 <th>Participants</th>
                                 <th>Inscrits</th>
                                 <th>Statut</th>
+                                <th class="text-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,6 +39,11 @@
                                     <td>{{ $formation->current_participants }}/{{ $formation->max_participants }}</td>
                                     <td>{{ $formation->enrollments_count }}</td>
                                     <td><x-status-badge :status="$formation->is_active ? 'active' : 'inactive'" /></td>
+                                    <td class="text-end">
+                                        <a href="{{ route('artisan.formations.enrollments', $formation) }}" class="btn btn-sm btn-outline-secondary">
+                                            Voir les inscrits
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
